@@ -16,9 +16,10 @@ public class PagerController extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0:
-                return new CurrentMusic();
-            case 1:
                 return new AllMusic();
+            case 1:
+                return new Albums();
+
             case 2:
                 return new Playlist();
             default:

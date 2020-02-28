@@ -6,11 +6,10 @@
     tools:context=".AllMusic">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="All Songs "
-        android:gravity="center"
-        android:textSize="18sp"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/MusicList"/>
+
 
 </FrameLayout>
