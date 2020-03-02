@@ -2,6 +2,7 @@ package com.example.tabmusic;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -26,6 +27,8 @@ public class player extends AppCompatActivity {
     ImageView prevbtn;
     static MediaPlayer mMediaplayer;
     int position;
+    TextView currenttime;
+    TextView totaltime;
 
 
     @Override
@@ -38,6 +41,8 @@ public class player extends AppCompatActivity {
         playbtn=findViewById(R.id.play);
         nextbtn=findViewById(R.id.next);
         prevbtn=findViewById(R.id.previous);
+        currenttime=findViewById(R.id.timerstart);
+        totaltime=findViewById(R.id.timerend);
 
         if(mMediaplayer!=null){
             mMediaplayer.stop();
@@ -115,9 +120,11 @@ public class player extends AppCompatActivity {
     }
 
     //create handler to set progress
+    @SuppressLint("HandlerLeak")
     private Handler handler= new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            currenttime.setText(createtimerlable(msg.what));
             seekBar.setProgress(msg.what);
         }
     };
@@ -135,14 +142,28 @@ public class player extends AppCompatActivity {
         mMediaplayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+
+
                 seekBar.setMax(mMediaplayer.getDuration());
 
+
+
+                String toTime=createtimerlable(mediaPlayer.getDuration());
+                totaltime.setText((toTime));
+
                 mMediaplayer.start();
+
+                playbtn.setImageResource(R.drawable.pause);
+
             }
         });
+
+
         mMediaplayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+
+            //do sth when the is finished playing now change the play icon
 
                 playbtn.setImageResource(R.drawable.paly);
             }
@@ -183,6 +204,15 @@ public class player extends AppCompatActivity {
             playbtn.setImageResource(R.drawable.pause);
         }
 
+    }
+    private String createtimerlable(int duration){
+        String timerlable="";
+        int min=duration / 1000 / 60;
+        int sec=duration / 1000 % 60;
+        timerlable +=min + ":";
+        if(sec<10)timerlable +="0";
+        timerlable += sec;
+        return timerlable;
     }
 
 }
